@@ -1,16 +1,25 @@
 package com.kovizone.demo.model;
 
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.crypto.SmUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import org.hibernate.annotations.DynamicInsert;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
  * @author <a href="mailto:kovichen@163.com">KoviChen</a>
  * @version 1.0
  */
+@DynamicInsert
+@Entity(name = "sys_user")
 public class SysUser {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @TableId(type = IdType.AUTO)
     private Integer id;
 
@@ -32,11 +41,38 @@ public class SysUser {
 
     private LocalDateTime createDatetime;
 
-    private String createUserId;
+    private Integer createUserId;
 
     private LocalDateTime updateDatetime;
 
-    private String updateUserId;
+    private Integer updateUserId;
+
+    @Version
+    private Integer version;
+
+    public void setEncodePassword(String password) {
+        this.salt = RandomUtil.randomString(128);
+        this.password = encodePassword(password, salt);
+    }
+
+    public void setEncodePassword(String password, String salt) {
+        this.salt = salt;
+        this.password = encodePassword(password, salt);
+    }
+
+    public boolean verifyPassword(String verifyPassword) {
+        return this.password.equals(encodePassword(verifyPassword, this.salt));
+    }
+
+    protected String encodePassword(String password, String salt) {
+        String passwordSm3 = SmUtil.sm3(password);
+        String basic
+                = SmUtil.sm3(salt).substring(0, 32)
+                + passwordSm3.substring(0, passwordSm3.length() / 2)
+                + SmUtil.sm3(salt).substring(32)
+                + passwordSm3.substring(passwordSm3.length() / 2);
+        return SmUtil.sm3(basic);
+    }
 
     public Integer getId() {
         return id;
@@ -118,11 +154,11 @@ public class SysUser {
         this.createDatetime = createDatetime;
     }
 
-    public String getCreateUserId() {
+    public Integer getCreateUserId() {
         return createUserId;
     }
 
-    public void setCreateUserId(String createUserId) {
+    public void setCreateUserId(Integer createUserId) {
         this.createUserId = createUserId;
     }
 
@@ -134,11 +170,24 @@ public class SysUser {
         this.updateDatetime = updateDatetime;
     }
 
-    public String getUpdateUserId() {
+    public Integer getUpdateUserId() {
         return updateUserId;
     }
 
-    public void setUpdateUserId(String updateUserId) {
+    public void setUpdateUserId(Integer updateUserId) {
         this.updateUserId = updateUserId;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
     }
 }

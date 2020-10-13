@@ -6,6 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springfox.documentation.oas.annotations.EnableOpenApi;
 
 /**
@@ -13,6 +15,8 @@ import springfox.documentation.oas.annotations.EnableOpenApi;
  * @version 1.0
  */
 @EnableOpenApi
+@EnableJpaRepositories
+@EnableTransactionManagement
 @MapperScan("com.kovizone.demo.mapper")
 @SpringBootApplication(exclude = {DruidDataSourceAutoConfigure.class, DataSourceAutoConfiguration.class})
 public class ApiApplication {

@@ -35,6 +35,7 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
     }
 
     public static void setDataSource(String key) {
+        log.info("set datasource: " + key);
         DATASOURCE_NAME.set(key);
     }
 
@@ -43,6 +44,7 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
     }
 
     public static void resetDataSource() {
+        log.info("reset datasource");
         DATASOURCE_NAME.remove();
     }
 

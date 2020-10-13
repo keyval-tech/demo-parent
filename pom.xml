@@ -12,6 +12,7 @@
         <module>demo-basic-druid</module>
         <module>demo-basic-swagger</module>
         <module>demo-basic-web-filter</module>
+        <module>demo-basic-rabbit</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -90,6 +91,12 @@
             <dependency>
                 <groupId>com.kovizone</groupId>
                 <artifactId>demo-basic-web-filter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kovizone</groupId>
+                <artifactId>demo-basic-rabbit</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
