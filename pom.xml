@@ -3,12 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.4.RELEASE</version>
+        <relativePath/>
+    </parent>
 
     <groupId>com.kovizone</groupId>
     <artifactId>demo-parent</artifactId>
     <version>1.0.0</version>
     <modules>
-        <module>demo-api</module>
+        <module>demo-api-dubbo-template</module>
+
+        <module>demo-module-dubbo-template</module>
+        <module>demo-module-gateway</module>
+
         <module>demo-basic-druid</module>
         <module>demo-basic-swagger</module>
         <module>demo-basic-web-filter</module>
@@ -22,20 +32,19 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
 
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent -->
-        <spring-boot-starter-parent.version>2.3.4.RELEASE</spring-boot-starter-parent.version>
         <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies -->
         <spring-cloud-dependencies.version>Hoxton.SR8</spring-cloud-dependencies.version>
-        <!-- https://mvnrepository.com/artifact/com.alibaba.cloud -->
-        <alibaba-cloud.version>2.2.3.RELEASE</alibaba-cloud.version>
-        <!-- https://mvnrepository.com/artifact/com.alibaba.csp -->
-        <alibaba-csp.version>1.8.0</alibaba-csp.version>
-        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign -->
-        <openfeign.version>2.2.5.RELEASE</openfeign.version>
+        <!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-alibaba-dependencies -->
+        <alibaba-cloud-dependencies.version>2.2.3.RELEASE</alibaba-cloud-dependencies.version>
+
+        <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
+        <mybatis-plus.version>3.4.0</mybatis-plus.version>
         <!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter -->
         <druid-spring-boot-starter.version>1.2.1</druid-spring-boot-starter.version>
         <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
         <aspectjweaver.version>1.9.6</aspectjweaver.version>
+        <!-- https://mvnrepository.com/artifact/com.alibaba.csp/sentinel-datasource-nacos -->
+        <sentinel-datasource-nacos.version>1.8.0</sentinel-datasource-nacos.version>
 
         <!-- 辅助工具 -->
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
@@ -52,33 +61,21 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-parent</artifactId>
-                <version>${spring-boot-starter-parent.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud-dependencies.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <dependency>
                 <groupId>com.kovizone</groupId>
-                <artifactId>demo-api</artifactId>
+                <artifactId>demo-api-dubbo-template</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.kovizone</groupId>
                 <artifactId>demo-basic-druid</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kovizone</groupId>
+                <artifactId>demo-basic-rabbit</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -96,36 +93,38 @@
 
             <dependency>
                 <groupId>com.kovizone</groupId>
-                <artifactId>demo-basic-rabbit</artifactId>
+                <artifactId>demo-module-dubbo-template</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign -->
+            <dependency>
+                <groupId>com.kovizone</groupId>
+                <artifactId>demo-module-gateway</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kovizone</groupId>
+                <artifactId>demo-module-template</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-openfeign</artifactId>
-                <version>${openfeign.version}</version>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-alibaba-nacos-discovery -->
+            <!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-alibaba-dependencies -->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-                <version>${alibaba-cloud.version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-alibaba-nacos-config -->
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-                <version>${alibaba-cloud.version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-alibaba-sentinel -->
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
-                <version>${alibaba-cloud.version}</version>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${alibaba-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
@@ -164,7 +163,6 @@
                 <version>${aspectjweaver.version}</version>
             </dependency>
 
-
             <!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter -->
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -178,27 +176,34 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.alibaba.csp/sentinel-datasource-nacos -->
+            <dependency>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-datasource-nacos</artifactId>
+                <version>${sentinel-datasource-nacos.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
@@ -219,28 +224,10 @@
             <artifactId>bcprov-jdk15on</artifactId>
         </dependency>
 
-
-        <!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-alibaba-nacos-config -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
         </dependency>
     </dependencies>
 
@@ -296,6 +283,14 @@
                 <version>2.7</version>
                 <configuration>
                     <generateBackupPoms>false</generateBackupPoms>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
