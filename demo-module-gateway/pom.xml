@@ -20,6 +20,11 @@
 
         <dependency>
             <groupId>com.kovizone</groupId>
+            <artifactId>demo-basic-log</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kovizone</groupId>
             <artifactId>demo-basic-swagger</artifactId>
         </dependency>
 

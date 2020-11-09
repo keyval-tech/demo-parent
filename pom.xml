@@ -18,11 +18,15 @@
 
         <module>demo-module-dubbo-template</module>
         <module>demo-module-gateway</module>
+        <module>demo-module-websocket</module>
 
         <module>demo-basic-druid</module>
+        <module>demo-basic-kafka</module>
+        <module>demo-basic-lang</module>
+        <module>demo-basic-log</module>
+        <module>demo-basic-rocketmq</module>
         <module>demo-basic-swagger</module>
         <module>demo-basic-web-filter</module>
-        <module>demo-basic-rabbit</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -45,6 +49,8 @@
         <aspectjweaver.version>1.9.6</aspectjweaver.version>
         <!-- https://mvnrepository.com/artifact/com.alibaba.csp/sentinel-datasource-nacos -->
         <sentinel-datasource-nacos.version>1.8.0</sentinel-datasource-nacos.version>
+        <!-- https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka -->
+        <spring-kafka.version>2.6.2</spring-kafka.version>
 
         <!-- 辅助工具 -->
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
@@ -57,6 +63,10 @@
         <springfox.version>3.0.0</springfox.version>
         <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <fastjson.version>1.2.74</fastjson.version>
+        <!-- https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-client -->
+        <rocketmq-client.version>4.7.1</rocketmq-client.version>
+        <!-- https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-spring-boot-starter -->
+        <rocketmq-spring-boot-starter.version>2.1.1</rocketmq-spring-boot-starter.version>
     </properties>
 
     <dependencyManagement>
@@ -75,7 +85,25 @@
 
             <dependency>
                 <groupId>com.kovizone</groupId>
-                <artifactId>demo-basic-rabbit</artifactId>
+                <artifactId>demo-basic-kafka</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kovizone</groupId>
+                <artifactId>demo-basic-lang</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kovizone</groupId>
+                <artifactId>demo-basic-log</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kovizone</groupId>
+                <artifactId>demo-basic-rocketmq</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -106,6 +134,12 @@
             <dependency>
                 <groupId>com.kovizone</groupId>
                 <artifactId>demo-module-template</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kovizone</groupId>
+                <artifactId>demo-module-websocket</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -189,17 +223,39 @@
                 <groupId>com.alibaba.csp</groupId>
                 <artifactId>sentinel-datasource-nacos</artifactId>
                 <version>${sentinel-datasource-nacos.version}</version>
-                <scope>test</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-client -->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-client</artifactId>
+                <version>${rocketmq-client.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-spring-boot-starter -->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq-spring-boot-starter.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka -->
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${spring-kafka.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -229,6 +285,7 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
+
     </dependencies>
 
     <profiles>
@@ -276,11 +333,12 @@
 
     <build>
         <plugins>
+            <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin -->
             <!-- 统一修改项目版本号指令：mvn versions:set -DnewVersion=[版本号] -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.7</version>
+                <version>2.8.1</version>
                 <configuration>
                     <generateBackupPoms>false</generateBackupPoms>
                 </configuration>
@@ -291,6 +349,13 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
